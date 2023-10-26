@@ -1,0 +1,7 @@
+ADD Train 60 1201 'A B C' 20 
+ADD Airplane 600 1202 'a b c' 20 10
+ADD Truck 6000 1203 'A b c' 20 12
+ADD Truck 60 1204 'A B c' 20 12
+PRINT
+REM _speed > 600
+PRINT
