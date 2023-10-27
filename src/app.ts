@@ -109,7 +109,7 @@ export function main(): void {
 		let obj = {};
 
 		[command, args] = parseCommands(line.trim());
-		console.log(command, args);
+		
 		if (command == 'ADD') {
 			obj = chooseObj(args);
 
@@ -121,3 +121,4 @@ export function main(): void {
 	});
 }
 main();
+
