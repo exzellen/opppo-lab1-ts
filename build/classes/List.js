@@ -1,4 +1,3 @@
-import * as fs from "fs";
 class Node {
     constructor(data) {
         this.data = data;
@@ -28,16 +27,18 @@ export default class List {
         return this;
     }
     print() {
+        let outText = '';
         if (this.isEmpty())
-            console.log("Список пуст.", "\n");
+            outText = "Список пуст.\n";
         else {
             let current = this.head;
-            console.log("\nСписок:");
+            outText = "\nСписок:\n";
             do {
-                console.log(JSON.stringify(current.data));
+                outText += JSON.stringify(current.data) + '\n';
                 current = current.next;
             } while (current !== this.head);
         }
+        document.getElementById('out').value = outText;
     }
     isTrue(cur, key, op, value) {
         switch (op) {

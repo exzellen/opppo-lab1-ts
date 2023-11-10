@@ -2,7 +2,7 @@ import Airplane from './classes/Airplane.js';
 import List from './classes/List.js';
 import Train from './classes/Train.js';
 import Truck from './classes/Truck.js';
-import * as fs from 'fs';
+//import * as fs from 'fs';
 export const createAirplane = ([speed, distance, owner, rangeOfFlight, carrying, ]) => {
     return new Airplane(+speed, +distance, owner, +rangeOfFlight, +carrying);
 };
@@ -12,15 +12,15 @@ export const createTrain = ([speed, distance, owner, wagons, ]) => {
 export const createTruck = ([speed, distance, owner, carrying, bodyCapacity, ]) => {
     return new Truck(+speed, +distance, owner, +carrying, +bodyCapacity);
 };
-export const openFile = (fileName) => {
-    try {
-        const data = fs.readFileSync(fileName, 'utf8');
-        const dataArray = data.split('\n'); // Разделяем строку на массив строк
-        return dataArray;
-    } catch (error) {
-        throw new Error(`An error occurred while reading the file`);
-    }
-};
+// export const openFile = (fileName) => {
+//     try {
+//         const data = fs.readFileSync(fileName, 'utf8');
+//         const dataArray = data.split('\n'); // Разделяем строку на массив строк
+//         return dataArray;
+//     } catch (error) {
+//         throw new Error(`An error occurred while reading the file`);
+//     }
+// };
 export const checkArgs = (type, [speed, distance, owner, ...other]) => {
     if (Number.isInteger(+speed) &&
         Number.isInteger(+distance) &&
@@ -67,7 +67,8 @@ export const chooseObj = (args) => {
     return obj;
 };
 export function main() {
-    const lines = openFile('./in.txt');
+    let lines = document.getElementById('text').value.split('\n');
+    //console.log(lines);
     const list = new List();
     lines.forEach(line => {
         let command;
@@ -85,5 +86,9 @@ export function main() {
         else
             console.log('Неизвестная команда');
     });
+    list.freeList();
 }
-main();
+document.getElementById("btn").onclick = function() {
+    main();
+    //document.getElementById("out").value = document.getElementById('text').value;
+}
