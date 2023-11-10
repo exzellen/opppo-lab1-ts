@@ -49,28 +49,18 @@ export default class List {
 		}
 	}
 
-	isTrue(cur, key, op, value){
-		// switch (op){
-		// 	case "==": return key in cur.data && cur.data[key] == value;
-		// 	case "!=": return key in cur.data && cur.data[key] != value;
-		// 	case ">": return key in cur.data && cur.data[key] > value;
-		// 	case ">=": return key in cur.data && cur.data[key] >= value;
-		// 	case "<": return key in cur.data && cur.data[key] < value;
-		// 	case "<=": return key in cur.data && cur.data[key] >= value;
-		// 	case "all": return true;
-		// 	default: return false;
-		// }
-
-		let func = {
-			"==" : () => key in cur.data && cur.data[key] == value,
-			"!=" : () => key in cur.data && cur.data[key] != value,
-			">" : () => key in cur.data && cur.data[key] > value,
-			">=" : () => key in cur.data && cur.data[key] >= value,
-			"<" : () => key in cur.data && cur.data[key] < value,
-			"<=" : () => key in cur.data && cur.data[key] <= value,
+	isTrue(node, key, operator, value){
+		const field = node.data;
+		const compare = {
+			"==" : () => field[key] == value,
+			"!=" : () => field[key] != value,
+			">" : () => field[key] > value,
+			">=" : () => field[key] >= value,
+			"<" : () => field[key] < value,
+			"<=" : () => field[key] <= value,
 			"all" : true,
 		};
-		return func[op];
+		return key in field && compare[operator];
 	}
 
 	deleteHead() {

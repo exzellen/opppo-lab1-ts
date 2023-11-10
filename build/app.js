@@ -12,15 +12,6 @@ export const createTrain = ([speed, distance, owner, wagons]) => {
 export const createTruck = ([speed, distance, owner, carrying, bodyCapacity]) => {
     return new Truck(+speed, +distance, owner, +carrying, +bodyCapacity);
 };
-// export const openFile = (fileName) => {
-//     try {
-//         const data = fs.readFileSync(fileName, 'utf8');
-//         const dataArray = data.split('\n'); 
-//         return dataArray;
-//     } catch (error) {
-//         throw new Error(`An error occurred while reading the file`);
-//     }
-// };
 export const checkArgs = (type, [speed, distance, owner, ...other]) => {
     const check = {
         'Airplane' : checkAirplaneArgs(other),
@@ -30,8 +21,9 @@ export const checkArgs = (type, [speed, distance, owner, ...other]) => {
 
     if (Number.isInteger(+speed) &&
         Number.isInteger(+distance) &&
+        typeof owner == 'string' &&
         owner.length > 3) {
-            return check[type];
+            if (type in check) return check[type];
     }
     return false;
 };
@@ -81,22 +73,33 @@ export const chooseObj = (args) => {
 import lines from './dom.js'
 export function main() {
     const list = new List();
+
+    const doFunc = {
+        "ADD" : (args) => {list.append(chooseObj(args));},
+        "REM" : (args) => {list.delete(...args);},
+        "PRINT" : () => {list.print();}
+    };
     lines.forEach(line => {
-        let command = {};
-        
-        let obj = {};
+        const command = {};
+    
         [command.name, command.args] = parseCommands(line.trim());
-        if (command.name == 'ADD') {
-            obj = chooseObj(command.args);
-            if (Object.keys(obj).length)
-                list.append(obj);
-        } else if (command.name == 'REM')
-            list.delete(...command.args);
-        else if (command.name == 'PRINT')
-            list.print();
-        else
-            console.log('Неизвестная команда');
+
+        if (command.name in doFunc) 
+            doFunc[command.name](command.args);
+        else console.log(`Неправильная команда: ${command}`);
+        
     });
     list.freeList();
 }
 document.getElementById("btn").onclick = main;
+
+
+// export const openFile = (fileName) => {
+//     try {
+//         const data = fs.readFileSync(fileName, 'utf8');
+//         const dataArray = data.split('\n'); 
+//         return dataArray;
+//     } catch (error) {
+//         throw new Error(`An error occurred while reading the file`);
+//     }
+// };

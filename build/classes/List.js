@@ -28,8 +28,7 @@ export default class List {
     }
     print() {
         let outText = '';
-        if (this.isEmpty())
-            outText = "Список пуст.\n";
+        if (this.isEmpty()) outText = "Список пуст.\n";
         else {
             let current = this.head;
             outText = "\nСписок:\n";
@@ -40,26 +39,20 @@ export default class List {
         }
         document.getElementById('out').value = outText;
     }
-    isTrue(cur, key, op, value) {
-        switch (op) {
-            case "==":
-                return key in cur.data && cur.data[key] == value;
-            case "!=":
-                return key in cur.data && cur.data[key] != value;
-            case ">":
-                return key in cur.data && cur.data[key] > value;
-            case ">=":
-                return key in cur.data && cur.data[key] >= value;
-            case "<":
-                return key in cur.data && cur.data[key] < value;
-            case "<=":
-                return key in cur.data && cur.data[key] >= value;
-            case "all":
-                return true;
-            default:
-                return false;
-        }
-    }
+    isTrue(node, key, operator, value){
+		const fields = node.data;
+		const compare = {
+			"==" : fields[key] == value,
+			"!=" : fields[key] != value,
+			">" : fields[key] > value,
+			">=" : fields[key] >= value,
+			"<" : fields[key] < value,
+			"<=" : fields[key] <= value,
+			"all" : true,
+		};
+		return key in fields && compare[operator];
+	}
+
     deleteHead() {
         if (this.isEmpty())
             return;
