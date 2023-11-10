@@ -2,7 +2,7 @@ import Airplane from './classes/Airplane.js';
 import List from './classes/List.js';
 import Train from './classes/Train.js';
 import Truck from './classes/Truck.js';
-//import * as fs from 'fs';
+
 export const createAirplane = ([speed, distance, owner, rangeOfFlight, carrying, ]) => {
     return new Airplane(+speed, +distance, owner, +rangeOfFlight, +carrying);
 };
@@ -12,15 +12,15 @@ export const createTrain = ([speed, distance, owner, wagons, ]) => {
 export const createTruck = ([speed, distance, owner, carrying, bodyCapacity, ]) => {
     return new Truck(+speed, +distance, owner, +carrying, +bodyCapacity);
 };
-// export const openFile = (fileName) => {
-//     try {
-//         const data = fs.readFileSync(fileName, 'utf8');
-//         const dataArray = data.split('\n'); // Разделяем строку на массив строк
-//         return dataArray;
-//     } catch (error) {
-//         throw new Error(`An error occurred while reading the file`);
-//     }
-// };
+export const openFile = (fileName) => {
+    try {
+        const data = fs.readFileSync(fileName, 'utf8');
+        const dataArray = data.split('\n'); 
+        return dataArray;
+    } catch (error) {
+        throw new Error(`An error occurred while reading the file`);
+    }
+};
 export const checkArgs = (type, [speed, distance, owner, ...other]) => {
     if (Number.isInteger(+speed) &&
         Number.isInteger(+distance) &&
@@ -66,13 +66,16 @@ export const chooseObj = (args) => {
         console.log(`Неправильные аргументы у ${type}`);
     return obj;
 };
+
+import text from './dom.js'
 export function main() {
-    let lines = document.getElementById('text').value.split('\n');
+    //let lines = document.getElementById('text').value.split('\n') || openFile('in.txt');
     //console.log(lines);
     const list = new List();
-    lines.forEach(line => {
+    text.forEach(line => {
         let command;
         let args;
+        
         let obj = {};
         [command, args] = parseCommands(line.trim());
         if (command == 'ADD') {
@@ -88,7 +91,4 @@ export function main() {
     });
     list.freeList();
 }
-document.getElementById("btn").onclick = function() {
-    main();
-    //document.getElementById("out").value = document.getElementById('text').value;
-}
+document.getElementById("btn").onclick = main;
