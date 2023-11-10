@@ -38,10 +38,8 @@ export const checkTrainArgs = (args) => args.length == 1 && Number.isInteger(+ar
 
 export const checkTruckArgs = (args) => args.length == 2 && Number.isInteger(+args[0])
 
-export const parseCommands = (str) => {
-    const words = str.split(' ');
-    const command = words[0];
-    let args = words.slice(1);
+export const parseCommands = (...str) => {
+    const [command, ...args] = str;
     if (command == 'ADD') {
         let count = 0; //кол-во объединяемых строк owner
         for (let i = 3; i < args.length; i++) {
@@ -82,7 +80,7 @@ export function main() {
     lines.forEach(line => {
         const command = {};
     
-        [command.name, command.args] = parseCommands(line.trim());
+        [command.name, command.args] = parseCommands(...line.trim().split(' '));
 
         if (command.name in doFunc) 
             doFunc[command.name](command.args);
