@@ -70,7 +70,7 @@ export default class List {
 			"<=" : () => key in cur.data && cur.data[key] <= value,
 			"all" : true,
 		};
-		return func.op;
+		return func[op];
 	}
 
 	deleteHead() {

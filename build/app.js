@@ -3,24 +3,24 @@ import List from './classes/List.js';
 import Train from './classes/Train.js';
 import Truck from './classes/Truck.js';
 
-export const createAirplane = ([speed, distance, owner, rangeOfFlight, carrying, ]) => {
+export const createAirplane = ([speed, distance, owner, rangeOfFlight, carrying]) => {
     return new Airplane(+speed, +distance, owner, +rangeOfFlight, +carrying);
 };
-export const createTrain = ([speed, distance, owner, wagons, ]) => {
+export const createTrain = ([speed, distance, owner, wagons]) => {
     return new Train(+speed, +distance, owner, +wagons);
 };
-export const createTruck = ([speed, distance, owner, carrying, bodyCapacity, ]) => {
+export const createTruck = ([speed, distance, owner, carrying, bodyCapacity]) => {
     return new Truck(+speed, +distance, owner, +carrying, +bodyCapacity);
 };
-export const openFile = (fileName) => {
-    try {
-        const data = fs.readFileSync(fileName, 'utf8');
-        const dataArray = data.split('\n'); 
-        return dataArray;
-    } catch (error) {
-        throw new Error(`An error occurred while reading the file`);
-    }
-};
+// export const openFile = (fileName) => {
+//     try {
+//         const data = fs.readFileSync(fileName, 'utf8');
+//         const dataArray = data.split('\n'); 
+//         return dataArray;
+//     } catch (error) {
+//         throw new Error(`An error occurred while reading the file`);
+//     }
+// };
 export const checkArgs = (type, [speed, distance, owner, ...other]) => {
     if (Number.isInteger(+speed) &&
         Number.isInteger(+distance) &&
@@ -35,6 +35,10 @@ export const checkArgs = (type, [speed, distance, owner, ...other]) => {
     }
     return false;
 };
+
+export const checkAirplaneArgs = () => {
+    
+}
 export const parseCommands = (str) => {
     const words = str.split(' ');
     const command = words[0];
@@ -53,8 +57,8 @@ export const parseCommands = (str) => {
 };
 export const chooseObj = (args) => {
     const type = args[0];
-    let obj = {};
     args = args.slice(1);
+    let obj = {};
     if (checkArgs(type, args)) {
         if (type == 'Airplane')
             obj = createAirplane(args);
@@ -67,12 +71,10 @@ export const chooseObj = (args) => {
     return obj;
 };
 
-import text from './dom.js'
+import lines from './dom.js'
 export function main() {
-    //let lines = document.getElementById('text').value.split('\n') || openFile('in.txt');
-    //console.log(lines);
     const list = new List();
-    text.forEach(line => {
+    lines.forEach(line => {
         let command;
         let args;
         
