@@ -22,23 +22,30 @@ export const createTruck = ([speed, distance, owner, carrying, bodyCapacity]) =>
 //     }
 // };
 export const checkArgs = (type, [speed, distance, owner, ...other]) => {
+    const check = {
+        'Airplane' : checkAirplaneArgs(other),
+        'Train' : checkTrainArgs(other),
+        'Truck' : checkTruckArgs(other)
+    }
+
     if (Number.isInteger(+speed) &&
         Number.isInteger(+distance) &&
         owner.length > 3) {
-        if ((type == 'Airplane' &&
-                other.length == 2 &&
-                Number.isInteger(+other[0]) &&
-                Number.isInteger(+other[1])) ||
-            (type == 'Train' && other.length == 1 && Number.isInteger(+other[0])) ||
-            (type == 'Truck' && other.length == 2 && Number.isInteger(+other[0])))
-            return true;
+            return check[type];
     }
     return false;
 };
 
-export const checkAirplaneArgs = () => {
-    
+export const checkAirplaneArgs = (args) =>  {
+    return (args.length == 2 && 
+            Number.isInteger(+args[0]) && 
+            Number.isInteger(+args[1]));
 }
+
+export const checkTrainArgs = (args) => args.length == 1 && Number.isInteger(+args[0]);
+
+export const checkTruckArgs = (args) => args.length == 2 && Number.isInteger(+args[0])
+
 export const parseCommands = (str) => {
     const words = str.split(' ');
     const command = words[0];
@@ -75,18 +82,17 @@ import lines from './dom.js'
 export function main() {
     const list = new List();
     lines.forEach(line => {
-        let command;
-        let args;
+        let command = {};
         
         let obj = {};
-        [command, args] = parseCommands(line.trim());
-        if (command == 'ADD') {
-            obj = chooseObj(args);
+        [command.name, command.args] = parseCommands(line.trim());
+        if (command.name == 'ADD') {
+            obj = chooseObj(command.args);
             if (Object.keys(obj).length)
                 list.append(obj);
-        } else if (command == 'REM')
-            list.delete(...args);
-        else if (command == 'PRINT')
+        } else if (command.name == 'REM')
+            list.delete(...command.args);
+        else if (command.name == 'PRINT')
             list.print();
         else
             console.log('Неизвестная команда');
