@@ -25,8 +25,9 @@ describe('Test app.ts', () => {
     });
 
     test('Test parseCommands', () => {
-        expect(parseCommands(`ADD Train 1 2 'Ivan Ivanov' 3`))
-            .toEqual(['ADD', [`Train`, `1`, `2`, `'Ivan Ivanov'`, `3`]]);
+        const str = "ADD Train 1 2 'a b c' 3";
+        expect(parseCommands(...str.split(' ')))
+            .toEqual(["ADD", ["Train", "1", "2", "'a b c'", "3"]]);
     });
 
     test('Test checkArgs', () => {
