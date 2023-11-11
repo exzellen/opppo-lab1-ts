@@ -14,8 +14,6 @@ text.value =
   `ADD Truck 60 1 'Artyom' 20 12\n` +
   `ADD Airplane 800 2 'Igor Gofman' 20 12\n` +
   `PRINT\n` +
-  `REM _speed >= 800\n` +
+  `REM speed >= 800\n` +
   `ADD Truck 61 3 'A B c' 20 12\n` +
   `PRINT`;
-
-export default text.value.split('\n');

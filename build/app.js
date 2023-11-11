@@ -35,7 +35,7 @@ export const checkTruckArgs = (args) => args.length == 2 && Number.isInteger(+ar
 
 export const parseCommands = (...str) => {
     const [command, ...args] = str;
-    const newArgs = [];
+    let newArgs = args;
     let itsJoinStr = false;
   
     if (command == 'ADD') {
@@ -46,37 +46,41 @@ export const parseCommands = (...str) => {
           if (arg.endsWith("'")) itsJoinStr = false;
           return;
         }
-          
-        if (arg.startsWith("'")) itsJoinStr = true;
+        if (arg.startsWith("'") && !arg.endsWith("'")) itsJoinStr = true;
       
         newArgs.push(arg);   
       });
     }
     return [command, newArgs];
-  };
-
-export const chooseObj = (args) => {
-    const type = args[0];
-    args = args.slice(1);
-    let obj = {};
-    if (checkArgs(type, args)) {
-        if (type == 'Airplane')
-            obj = createAirplane(args);
-        else if (type == 'Train')
-            obj = createTrain(args);
-        else if (type == 'Truck')
-            obj = createTruck(args);
-    } else
-        console.log(`Неправильные аргументы у ${type}`);
-    return obj;
 };
 
-import lines from './dom.js'
-export function main() {
-    const list = new List();
+export const chooseObj = (...args) => {
+    const [type, ...params] = args;
+    let obj = {};
+    let transport = {
+        "Airplane" : createAirplane,
+        "Train" : createTrain, 
+        "Truck" : createTruck
+    } 
+    if (type in transport){
+        obj = transport[type](params);
+        return obj;
+    }
+        
+    else console.log(`Неправильные аргументы у ${type}`);
+};
 
+export function main() {
+    const lines = document.getElementById("text").value.split('\n');
+    const list = new List();
+    let obj = {};
     const doFunc = {
-        "ADD" : (args) => {list.append(chooseObj(args));},
+        "ADD" : (args) => {
+            obj = chooseObj(...args);
+            if (Object.keys(obj).length) 
+                list.append(obj);
+            else console.log(`Неправильные аргументы: ${args}`);
+        },
         "REM" : (args) => {list.delete(...args);},
         "PRINT" : () => {list.print();}
     };

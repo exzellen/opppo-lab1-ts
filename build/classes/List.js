@@ -33,7 +33,7 @@ export default class List {
             let current = this.head;
             outText = "\nСписок:\n";
             do {
-                outText += JSON.stringify(current.data) + '\n';
+                outText += current.data.className + ':' + JSON.stringify(current.data) + '\n';
                 current = current.next;
             } while (current !== this.head);
         }
