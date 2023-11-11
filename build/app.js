@@ -35,7 +35,7 @@ export const checkTruckArgs = (args) => args.length == 2 && Number.isInteger(+ar
 
 export const parseCommands = (...str) => {
     const [command, ...args] = str;
-    let newArgs = args;
+    let newArgs = [];
     let itsJoinStr = false;
   
     if (command == 'ADD') {
@@ -50,8 +50,9 @@ export const parseCommands = (...str) => {
       
         newArgs.push(arg);   
       });
+      return [command, newArgs];
     }
-    return [command, newArgs];
+    return [command, args];
 };
 
 export const chooseObj = (...args) => {
@@ -70,8 +71,9 @@ export const chooseObj = (...args) => {
     else console.log(`Неправильные аргументы у ${type}`);
 };
 
+import input from "./dom.js"
 export function main() {
-    const lines = document.getElementById("text").value.split('\n');
+    const lines = input.value.split('\n');
     const list = new List();
     let obj = {};
     const doFunc = {

@@ -31,13 +31,13 @@ export default class List {
         if (this.isEmpty()) outText = "Список пуст.\n";
         else {
             let current = this.head;
-            outText = "\nСписок:\n";
+            outText = "Список:\n";
             do {
-                outText += current.data.className + ':' + JSON.stringify(current.data) + '\n';
+                outText += current.data.constructor.name + ':' + JSON.stringify(current.data) + ',\n';
                 current = current.next;
             } while (current !== this.head);
         }
-        document.getElementById('out').value = outText;
+        document.getElementById('out').value += '\n' + outText;
     }
     isTrue(node, key, operator, value){
 		const fields = node.data;

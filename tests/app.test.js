@@ -19,9 +19,9 @@ describe('Test app.ts', () => {
 
 
     test('Test chooseObj, create<Airplane, Train, Truck>', () => {
-        expect(chooseObj(airArgs)).toEqual(air);
-        expect(chooseObj(trainArgs)).toEqual(train);
-        expect(chooseObj(truckArgs)).toEqual(truck);
+        expect(chooseObj(...airArgs)).toEqual(air);
+        expect(chooseObj(...trainArgs)).toEqual(train);
+        expect(chooseObj(...truckArgs)).toEqual(truck);
     });
 
     test('Test parseCommands', () => {

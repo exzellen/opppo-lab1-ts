@@ -9,11 +9,13 @@ Array.from(textareas).forEach(textarea => {
   textarea.style.display = 'block';
 });
 
-let text = document.getElementById('text');
+let input = document.getElementById('text');
 text.value =
-  `ADD Truck 60 1 'Artyom' 20 12\n` +
-  `ADD Airplane 800 2 'Igor Gofman' 20 12\n` +
+  `ADD Airplane 60 1 'Artyom' 20 12\n` +
+  `ADD Train 800 2 'a b' 20 12\n` +
+  `ADD Truck 900 2 'Igor Gofman' 20 12\n` +
   `PRINT\n` +
   `REM speed >= 800\n` +
-  `ADD Truck 61 3 'A B c' 20 12\n` +
-  `PRINT`;
+  `PRINT\n`
+
+export default input;
