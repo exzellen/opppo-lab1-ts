@@ -1,134 +1,75 @@
-class Node {
-    constructor(data) {
-        this.data = data;
-        this.next = null;
-    }
-}
+'use strict';
+
 export default class List {
     constructor() {
-        //tail--->node--->head
-        this.head = null;
-        this.tail = null;
+        this._head = null;
+        this._last = null;
+        this._length = 0;
     }
-    isEmpty() {
-        return this.head == null;
+
+    get head() {
+        return this._head;
     }
-    append(data) {
-        const newNode = new Node(data);
-        if (this.isEmpty()) {
-            this.head = newNode;
-            this.tail = newNode;
-            newNode.next = newNode; // Устанавливаем ссылку на самого себя для создания кольцевой структуры
-        } else {
-            newNode.next = this.head;
-            this.tail.next = newNode;
-            this.tail = newNode;
-        }
+
+    get last() {
+        return this._last;
+    }
+
+    get length() {
+        return this._length;
+    }
+
+    _arrayify(value) {
+        return Array.isArray(value) ? value : [value];
+    }
+
+    _isValid(index) {
+        return index >= 0 && index < this.length;
+    }
+
+    clear() {
+        this._head = null;
+        this._last = null;
+        this._length = 0;
         return this;
     }
-    print() {
-        let outText = '';
-        if (this.isEmpty()) outText = "Список пуст.\n";
-        else {
-            let current = this.head;
-            outText = "Список:\n";
-            do {
-                outText += current.data.constructor.name + ':' + JSON.stringify(current.data) + ',\n';
-                current = current.next;
-            } while (current !== this.head);
-        }
-        document.getElementById('out').value += '\n' + outText;
-    }
-    isTrue(node, key, operator, value){
-		const fields = node.data;
-		const compare = {
-			"==" : fields[key] == value,
-			"!=" : fields[key] != value,
-			">" : fields[key] > value,
-			">=" : fields[key] >= value,
-			"<" : fields[key] < value,
-			"<=" : fields[key] <= value,
-			"all" : true,
-		};
-		return key in fields && compare[operator];
-	}
 
-    deleteHead() {
-        if (this.isEmpty())
-            return;
-        if (this.head.next == this.head) {
-            this.head = this.tail = null;
-            return;
-        }
-        this.head = this.head.next;
-        this.tail.next = this.head;
+    get(index) {
+        const { value } = this.node(index);
+        return value;
     }
-    deleteTail() {
-        if (this.isEmpty())
-            return;
-        if (this.head == this.tail) {
-            this.deleteHead();
-            return;
-        }
-        let p = this.head;
-        while (p.next !== this.tail) {
-            p = p.next;
-        }
-        this.tail = p;
-        this.tail.next = this.head;
+
+    isCircular() {
+        return this.constructor.name === 'Circular';
     }
-    deleteNode(serNode) {
-        if (this.isEmpty() || serNode == null)
-            return;
-        if (this.head == serNode) {
-            this.deleteHead();
-            return;
-        } else if (this.tail == serNode) {
-            this.deleteTail();
-            return;
-        }
-        let prev = this.head;
-        let cur = this.head.next;
-        while (cur && cur !== serNode) {
-            cur = cur.next;
-            prev = prev.next;
-        }
-        if (!cur)
-            return;
-        prev.next = cur.next;
+
+    isEmpty() {
+        return !this._head && this._length === 0;
     }
-    freeList() {
-        if (this.isEmpty())
-            return;
-        while (!this.isEmpty()) {
-            this.deleteHead();
-        }
+
+    isLinear() {
+        return this.constructor.name === 'Linear';
     }
-    delete(...args) {
-        const [key, op, value] = args;
-        let remNode = this.head;
-        let buff = remNode;
-        let flag = false;
-        while (true) {
-            if (this.isTrue(remNode, key, op, value)) {
-                if (remNode == this.head) {
-                    this.deleteNode(remNode);
-                    remNode = this.head;
-                } else if (remNode == this.tail) {
-                    this.deleteNode(remNode);
-                    remNode = this.tail;
-                } else {
-                    buff = remNode;
-                    buff = buff.next;
-                    this.deleteNode(remNode);
-                    remNode = buff;
-                }
-            } else
-                remNode = remNode.next;
-            if (!remNode || flag)
-                return;
-            if (remNode == this.tail)
-                flag = true;
+
+    node(index) {
+        if (!this._isValid(index)) {
+            throw new RangeError('List index out of bounds');
         }
+
+        let count = 0;
+        let { _head: node } = this;
+
+        while (index !== count) {
+            node = node.next;
+            count++;
+        }
+
+        return node;
+    }
+
+    set({ value, index }) {
+        const node = this.node(index);
+        node.value = value;
+        return this;
     }
 }
